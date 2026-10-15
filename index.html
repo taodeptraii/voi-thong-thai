@@ -342,13 +342,14 @@ function greetText(first){
   if(first)return['Xin chào '+ten()+'!','Mình là Voi Thông Thái. Rất vui được làm quen với bạn! Từ hôm nay, mình sẽ đồng hành cùng bạn học Toán thật vui nhé. Chúng mình cùng bắt đầu thôi nào!'];
   const h=new Date().getHours(),part=h<11?'buổi sáng':h<14?'buổi trưa':h<18?'buổi chiều':'buổi tối',st=S.day===today()||S.day===yest()?S.days:0;
   return['Chào '+part+', '+ten()+'!','Voi nhớ bạn lắm đó!'+(st>=2?' Bạn đã học liên tiếp '+st+' ngày rồi, giỏi quá!':'')+' Hôm nay mình cùng học Toán thật vui nhé!']}
+const VOICE_RATE=1.25; /* tốc độ giọng chào: 1 = bình thường, lớn hơn = nhanh hơn */
 const stat=t=>{const e=$('wst');if(e)e.textContent=t||''};
 function speakHi(t){stat('');
   if(!snd){stat('🔔 Âm thanh đang tắt nên Voi chỉ chào bằng chữ.');return}
   if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){stat('Trình duyệt này chưa hỗ trợ giọng nói. Em hãy mở bằng Chrome hoặc Safari nhé.');return}
   const run=()=>{try{const all=speechSynthesis.getVoices(),v=all.find(x=>/^vi/i.test(x.lang)||/vietnam/i.test(x.name))||null;
       if(!v&&all.length){stat('Máy này chưa có giọng tiếng Việt. Em cài giọng Tiếng Việt trong phần cài đặt giọng nói (text-to-speech) của máy nhé.');return}
-      const u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(v)u.voice=v;u.rate=.95;u.pitch=1.2;u.volume=1;let started=false,bad=false;
+      const u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(v)u.voice=v;u.rate=VOICE_RATE;u.pitch=1.2;u.volume=1;let started=false,bad=false;
       u.onstart=()=>{started=true;stat('🔊 Voi đang chào em…')};u.onend=()=>stat('');
       u.onerror=e=>{if(e&&e.error!=='canceled'&&e.error!=='interrupted'){bad=true;stat('Không phát được giọng nói (lỗi: '+(e.error||'không rõ')+'). Em bấm “Nghe Voi chào” thử lại nhé.')}};
       const go=()=>{try{speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){stat('Không phát được giọng nói.')}};
