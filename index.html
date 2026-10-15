@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Voi Thông Thái – Gia sư Toán lớp 2</title>
+<style>
+:root{--bg:#F3F6FF;--card:#fff;--ink:#0B1040;--navy:#000054;--blue:#0B63D8;--gold:#F5C400;--ok:#1B9A6C;--bad:#D7263D;--line:#D5E0F5;--mine:#EAF1FF;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A0E2E;--card:#141A4A;--ink:#EEF2FF;--navy:#2A33A0;--blue:#6FA8FF;--line:#2B3470;--mine:#1E2766}}
+:root[data-theme="dark"]{--bg:#0A0E2E;--card:#141A4A;--ink:#EEF2FF;--navy:#2A33A0;--blue:#6FA8FF;--line:#2B3470;--mine:#1E2766}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.45 "Segoe UI",Calibri,Arial,sans-serif;display:flex;flex-direction:column;max-width:640px;margin:0 auto}
+header{padding:10px 16px;display:flex;align-items:center;gap:12px;background:var(--navy);color:#fff}
+.mas{font-size:40px;display:inline-block;animation:breathe 3s ease-in-out infinite}
+.mas.jump{animation:jump .6s}.mas.shake{animation:shake .5s}
+@keyframes breathe{50%{transform:scale(1.06)}}
+@keyframes jump{40%{transform:translateY(-16px) rotate(-10deg)}70%{transform:translateY(0) rotate(6deg)}}
+@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.who{flex:1}.who b{font-size:18px}.who small{display:block;opacity:.85}
+.xp{height:7px;border-radius:5px;background:rgba(255,255,255,.25);margin-top:4px;overflow:hidden}.xp i{display:block;height:100%;width:0;background:var(--gold);transition:width .5s}
+.score{font-weight:700;color:var(--gold);font-size:19px}
+#tools{display:flex;gap:6px;padding:8px 12px;flex-wrap:wrap}
+#tools button,.btn{font:inherit;font-size:15px;font-weight:600;padding:7px 12px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;cursor:pointer}
+#tools button[aria-pressed="true"]{background:var(--gold);color:#000054;border-color:var(--gold)}
+#home{flex:1;overflow-y:auto;padding:8px 16px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px 12px;text-align:center;font:inherit;color:var(--ink);cursor:pointer;transition:transform .15s}
+.card:hover:not(:disabled){transform:translateY(-3px);border-color:var(--gold)}
+.card:disabled{opacity:.5;cursor:not-allowed}
+.card .e{font-size:40px;display:block}.card b{display:block;margin:4px 0 2px}.card small{opacity:.8;font-size:13px;line-height:1.3;display:block}
+#info{padding:0 16px;font-size:13px;opacity:.8}
+#chat{flex:1;overflow-y:auto;padding:8px 16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:88%;padding:10px 14px;border-radius:16px;white-space:pre-wrap;animation:pop .25s}
+@keyframes pop{from{transform:scale(.92);opacity:0}}
+.voi{background:var(--navy);color:#fff;align-self:flex-start;border-bottom-left-radius:4px}
+.me{background:var(--mine);border:1px solid var(--line);align-self:flex-end;border-bottom-right-radius:4px}
+.ok{border-left:5px solid var(--ok)}.bad{border-left:5px solid var(--bad)}
+.msg svg{display:block;margin:8px auto 0;background:#fff;border-radius:50%}
+.big{font-size:46px;text-align:center;display:block}
+#bar{padding:12px 16px;background:var(--card);border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+#bar input{flex:1;min-width:120px;font:inherit;font-size:20px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}
+#bar button{font:inherit;font-weight:700;padding:10px 16px;border:0;border-radius:12px;background:var(--blue);color:#fff;cursor:pointer}
+#bar button.alt{background:var(--card);color:var(--ink);border:2px solid var(--line)}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.ov{position:fixed;inset:0;background:rgba(0,0,30,.6);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
+.sheet{background:var(--card);color:var(--ink);border-radius:18px;padding:18px;max-width:460px;width:100%;max-height:88vh;overflow-y:auto}
+.sheet h2{margin:0 0 8px;font-size:20px}.row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--line)}
+.bd{display:flex;gap:8px;align-items:center;padding:4px 0}.bd.off{opacity:.35;filter:grayscale(1)}
+.sheet input{font:inherit;font-size:18px;padding:10px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);flex:1;min-width:0}
+.msg canvas{display:block;max-width:100%;border-radius:10px;margin-top:8px;background:#fff}
+.calc{position:relative;display:grid;grid-template-columns:30px 56px 56px;background:#fff;color:#000054;padding:6px 10px;font-size:32px;font-weight:700;line-height:1.25;text-align:center;border-radius:12px;width:fit-content;margin:8px auto 0}
+.calc i{position:absolute;top:0;bottom:0;border-left:2px dashed #D7263D}
+.calc .ln{grid-column:1/4;border-top:3px solid #000054;margin:2px 0}
+.calc .op{color:#D7263D}
+#wt{font-size:18px;line-height:1.55;margin:6px 0 16px}.big2{font-size:88px;line-height:1.1}#wh{font-size:24px;margin:6px 0}
+#cf{position:fixed;inset:0;pointer-events:none;z-index:9}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <span class="mas" id="mas" aria-hidden="true">🐘</span>
+  <div class="who"><b>Voi Thông Thái</b><small id="lvname"></small><div class="xp"><i id="xp"></i></div></div>
+  <div class="score" id="stars" aria-live="polite"></div>
+</header>
+<div id="tools">
+  <button id="back" hidden>← Menu</button><button id="hint" hidden>💡 Gợi ý</button>
+  <button id="snd" aria-pressed="true">🔔 Âm thanh</button><button id="rep">🏅 Thành tích</button>
+</div>
+<div id="info"></div>
+<section id="home">
+  <button class="card" data-m="1"><span class="e">⚡</span><b>Thử thách tính nhanh</b><small>Cộng, trừ trong phạm vi 100. Tự tăng giảm độ khó.</small></button>
+  <button class="card" data-m="2" id="c2"><span class="e">🩺</span><b>Bác sĩ toán học</b><small>Khám bài làm của bạn Gấu: tìm lỗi sai, kể cả đặt lệch hàng.</small></button>
+  <button class="card" data-m="3"><span class="e">🛡️</span><b>Hiệp sĩ giải toán</b><small>Toán có lời văn. Voi chỉ gợi mở, không cho đáp số.</small></button>
+  <button class="card" data-m="4"><span class="e">📐</span><b>Nhà kiến trúc nhí</b><small>Xem đồng hồ và nhận biết các khối hình.</small></button>
+  <button class="card" data-m="5"><span class="e">⏱️</span><b>Đua tốc độ 60 giây</b><small>Làm được bao nhiêu câu đúng? Phá kỷ lục của mình!</small></button>
+  <button class="card" data-m="6"><span class="e">✖️</span><b>Bảng nhân chia</b><small>Luyện bảng nhân, chia 2, 3, 4, 5.</small></button>
+  <button class="card" data-m="7"><span class="e">⚖️</span><b>So sánh số</b><small>Điền dấu &gt; &lt; = và tìm số lớn nhất, bé nhất.</small></button>
+  <button class="card" data-m="8" id="c8"><span class="e">📒</span><b>Sổ tay lỗi sai</b><small id="c8s">Ôn lại những câu từng làm sai.</small></button>
+  <button class="card" data-m="9" id="c9"><span class="e">💬</span><b>Hỏi Voi</b><small>Gõ bài toán của em, Voi gợi mở từng bước.</small></button>
+</section>
+<main id="chat" aria-live="polite" hidden></main>
+<div id="bar" hidden></div>
+<div class="ov" id="panel" role="dialog" aria-modal="true" aria-label="Thành tích" hidden><div class="sheet" id="sheet"></div></div>
+<div class="ov" id="nameov" role="dialog" aria-modal="true" aria-label="Tên của em" hidden><div class="sheet"><h2>Chào bạn nhỏ! 🐘</h2><p>Voi chưa biết tên em. Em tên là gì nào?</p><div style="display:flex;gap:8px"><input id="nmi" maxlength="20" placeholder="Tên của em" aria-label="Tên của em"><button class="btn" id="nmb">Bắt đầu</button></div></div></div>
+<div class="ov" id="welcome" role="dialog" aria-modal="true" aria-label="Lời chào của Voi" hidden><div class="sheet" style="text-align:center"><div class="mas big2" id="wm" aria-hidden="true">🐘</div><h2 id="wh"></h2><p id="wt"></p><p id="wst" aria-live="polite" style="font-size:14px;min-height:20px;opacity:.9;margin:0 0 12px"></p><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap"><button class="btn" id="wr" style="font-size:17px;padding:10px 16px">🔊 Nghe Voi chào</button><button class="btn" id="wb" style="font-size:17px;padding:10px 16px;background:var(--gold);color:#000054;border-color:var(--gold)">Bắt đầu thôi! 🚀</button></div></div></div>
+<canvas id="cf" aria-hidden="true"></canvas>
+
+<script>
+const $=id=>document.getElementById(id),chat=$('chat'),bar=$('bar'),mas=$('mas');
+const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),pick=a=>a[R(0,a.length-1)],shuf=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const LV=[[0,'Voi con'],[20,'Voi nhỏ thông minh'],[60,'Voi chăm chỉ'],[120,'Voi thông thái'],[250,'Vua Voi']];
+const BD={first:['🌱','Bước đầu tiên: đúng câu đầu tiên'],s5:['⚡','Tia chớp: 5 câu đúng liên tiếp'],hard:['🔥','Vượt thử thách: đúng bài mức khó nhất'],knight:['🛡️','Hiệp sĩ: giải 3 bài toán đố'],clock:['⏰','Chuyên gia giờ giấc: đúng 3 đồng hồ'],shape:['🧊','Nhà kiến trúc nhí: nhận biết đúng 3 khối'],king:['👑','Voi thông thái: đạt cấp 4'],daily:['🎯','Mục tiêu hằng ngày: 10 câu đúng trong một ngày'],week:['🔥','Chăm chỉ: học 3 ngày liên tiếp'],race:['🏎️','Tay đua nhí: 10 câu đúng trong 60 giây'],mul:['✖️','Thần đồng bảng nhân: 10 câu nhân chia đúng'],cmp:['⚖️','Thẩm phán số: 10 câu so sánh đúng'],review:['📒','Biết sai biết sửa: ôn đúng 5 câu lỗi sai'],doctor:['🩺','Bác sĩ nhí: khám đúng 3 bài làm'],ask:['💬','Tò mò: hỏi Voi 5 câu']};
+const DEF=()=>({stars:0,xp:0,ok:0,bad:0,carry:0,borrow:0,solved:0,clk:0,shp:0,best:0,b:{},name:'',day:'',days:0,today:0,wq:[],race:0,mul:0,cmp:0,rev:0,cal:0,doc:0,askn:0,hello:0});
+let S=DEF();
+try{Object.assign(S,JSON.parse(localStorage.getItem('voi2')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('voi2',JSON.stringify(S))}catch(e){}};
+let rt=0,rc=0,rTimer=null;
+let mode=0,cur=null,level=1,streak=0,step=0,tries=0,snd=true,AC,MG,lastT=0,lastP=-1;
+
+/* ---------- tiện ích giao diện ---------- */
+const lvl=()=>{let i=0;LV.forEach((l,k)=>{if(S.xp>=l[0])i=k});return i};
+function hud(){const i=lvl(),n=LV[i+1];$('stars').textContent='⭐ '+S.stars;$('lvname').textContent='Cấp '+(i+1)+': '+LV[i][1];$('xp').style.width=(n?(S.xp-LV[i][0])/(n[0]-LV[i][0])*100:100)+'%'}
+function ac(){if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();MG=AC.createGain();MG.gain.value=.95;const c=AC.createDynamicsCompressor();MG.connect(c);c.connect(AC.destination)}
+  if(AC.state==='suspended'){const r=AC.resume();if(r&&r.catch)r.catch(()=>{})}return AC}
+function tone(f,d,t=0,type='sine',v=.3,sl=0){if(!snd)return;try{const a=ac(),s=a.currentTime+t,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f,s);
+  if(sl)o.frequency.exponentialRampToValueAtTime(Math.max(60,f+sl),s+d);g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v,s+.012);g.gain.exponentialRampToValueAtTime(.0001,s+d);
+  o.connect(g);g.connect(MG);o.start(s);o.stop(s+d+.03)}catch(e){}}
+function sfx(k){if(!snd)return;lastT=performance.now();const T=tone;
+  switch(k){
+    case'ok':T(660,.14,0,'triangle',.32);T(880,.22,.11,'triangle',.32);break;
+    case'no':T(300,.28,0,'triangle',.3,-140);break;
+    case'win':[523,659,784,1047].forEach((f,i)=>T(f,.22,i*.1,'triangle',.3));break;
+    case'click':T(1000,.05,0,'square',.1);break;
+    case'nav':T(420,.14,0,'sine',.3,420);T(840,.1,.1,'sine',.2);break;
+    case'back':T(760,.14,0,'sine',.3,-380);break;
+    case'hint':T(988,.14,0,'sine',.3);T(1319,.24,.12,'sine',.28);break;
+    case'open':T(520,.1,0,'sine',.28);T(780,.16,.08,'sine',.28);break;
+    case'close':T(780,.1,0,'sine',.28);T(520,.16,.08,'sine',.28);break;
+    case'coin':T(1568,.08,.18,'square',.1);T(2093,.22,.25,'square',.1);break;
+    case'tick':T(1200,.05,0,'square',.14);break;
+    case'go':T(660,.15,0,'square',.15);T(660,.15,.25,'square',.15);T(990,.3,.5,'square',.15);break;
+    case'end':[784,659,523,392].forEach((f,i)=>T(f,.2,i*.14,'triangle',.3));break;
+    case'send':T(700,.07,0,'triangle',.25);T(1050,.1,.06,'triangle',.25);break}}
+function pop(){if(performance.now()-lastT>200)tone(520,.07,0,'sine',.14,120)}
+function react(c){mas.classList.remove('jump','shake');void mas.offsetWidth;mas.classList.add(c)}
+const cf=$('cf'),cx=cf.getContext('2d');
+function confetti(){if(reduce)return;cf.width=innerWidth;cf.height=innerHeight;const P=[];for(let i=0;i<80;i++)P.push({x:innerWidth/2,y:innerHeight*.35,vx:(Math.random()-.5)*13,vy:-Math.random()*11-3,c:pick(['#F5C400','#FF4D88','#0B63D8','#1B9A6C']),l:0});
+  (function f(){cx.clearRect(0,0,cf.width,cf.height);P.forEach(p=>{p.l++;p.x+=p.vx;p.y+=p.vy;p.vy+=.3;cx.fillStyle=p.c;cx.fillRect(p.x,p.y,7,5)});if(P[0].l<90)requestAnimationFrame(f);else cx.clearRect(0,0,cf.width,cf.height)})()}
+function say(who,t,cls,node){
+  if(!t&&!node)return;
+  const d=document.createElement('div');d.className='msg '+who+(cls?' '+cls:'');d.textContent=t;if(node)d.appendChild(node);chat.appendChild(d);chat.scrollTop=chat.scrollHeight;if(who==='voi')pop();
+}
+function gain(xp,st){const a=lvl();S.xp+=xp;S.stars+=st;const b=lvl();hud();save();if(st>0&&b===a)sfx('coin');
+  if(b>a){say('voi','🎊 Em lên Cấp '+(b+1)+': '+LV[b][1]+'!','ok');confetti();sfx('win');if(b>=3)badge('king')}}
+function badge(id){if(S.b[id])return;S.b[id]=1;save();say('voi','🏅 Huy hiệu mới: '+BD[id][0]+' '+BD[id][1],'ok');confetti();sfx('win')}
+const PRAISE=['Chính xác! Giỏi lắm!','Siêu quá bạn nhỏ ơi!','Voi tự hào về em!','Tuyệt vời ông mặt trời!','Đúng rồi, em thật thông minh!'];
+const ten=()=>S.name||'bạn nhỏ',dstr=d=>d.toLocaleDateString('sv-SE'),today=()=>dstr(new Date()),yest=()=>dstr(new Date(Date.now()-864e5));
+function tick(ok){const d=today();if(S.day!==d){S.days=S.day===yest()?S.days+1:1;S.day=d;S.today=0;if(S.days>=3)badge('week')}
+  if(ok){S.today++;if(S.today===10){badge('daily');say('voi','🎯 Em đạt mục tiêu hôm nay rồi, giỏi quá!','ok')}}save()}
+function addWQ(c){if(!c||!c.text)return;if(!S.wq.some(x=>x.t===c.text))S.wq.push({t:c.text,a:c.ans});if(S.wq.length>10)S.wq.shift();save()}
+function homeInfo(){const ok=S.day===today(),st=ok||S.day===yest()?S.days:0;info('Chào '+ten()+'! Hôm nay: '+Math.min(ok?S.today:0,10)+'/10 câu đúng  •  Chuỗi '+st+' ngày 🔥');$('c8').disabled=!S.wq.length;$('c8s').textContent=S.wq.length?S.wq.length+' câu cần ôn lại.':'Chưa có câu nào cần ôn.'}
+function right(extra){tick(true);react('jump');sfx('ok');S.ok++;say('voi','⭐ '+pick(PRAISE)+(extra||''),'ok');if(S.ok===1)badge('first')}
+function wrong(t){tick(false);react('shake');sfx('no');S.bad++;say('voi',t,'bad')}
+function numInput(label,fn,skip){bar.innerHTML='';const i=document.createElement('input');i.type='number';i.inputMode='numeric';i.placeholder=label;i.setAttribute('aria-label',label);
+  const b=document.createElement('button');b.textContent='Gửi';const go=()=>{if(i.value==='')return;const v=+i.value;say('me',String(v));fn(v)};b.onclick=go;i.onkeydown=e=>{if(e.key==='Enter')go()};bar.append(i,b);addSkip(skip);i.focus()}
+function choices(opts,fn,skip){bar.innerHTML='';opts.forEach(o=>{const b=document.createElement('button');b.className='alt';b.textContent=o;b.onclick=()=>{say('me',o);fn(o)};bar.appendChild(b)});addSkip(skip)}
+function addSkip(f){if(!f)return;const b=document.createElement('button');b.className='alt';b.textContent='Bỏ qua →';b.onclick=f;bar.appendChild(b)}
+function info(t){$('info').textContent=t}
+
+/* ---------- Trạm 1: tính nhanh ---------- */
+function genQ(){
+  const add=Math.random()<.55;let a,b,ans,text,kind=add?'+':'-';
+  if(level===1){if(add){a=R(11,59);b=R(2,9);ans=a+b;text=a+' + '+b+' = ?'}else{a=R(21,58);if(a%10===0)a++;b=R(1,a%10);ans=a-b;text=a+' − '+b+' = ?'}}
+  else if(level===2){if(add){do{a=R(25,69);b=R(15,39)}while(a%10+b%10<10);ans=a+b;text=a+' + '+b+' = ?'}else{do{a=R(40,95);b=R(15,a-10)}while(b%10<=a%10);ans=a-b;text=a+' − '+b+' = ?'}}
+  else{if(add){a=R(12,49);b=R(12,49);ans=b;text=a+' + ? = '+(a+b);kind='x'}else{const c=R(40,99);b=R(12,c-12);a=c;ans=b;text=c+' − ? = '+(c-b);kind='x'}}
+  cur={a,b,ans,kind,lv:level,text};return text
+}
+function q1(){const text=genQ();info('Độ khó: '+['Dễ','Vừa','Thử thách'][level-1]+'  •  Đúng liên tiếp: '+streak);say('voi',text);numInput('Đáp số',c1)}
+function c1(v){
+  if(v===cur.ans){streak++;S.best=Math.max(S.best,streak);right();gain(1,1);
+    if(streak===5)badge('s5');if(cur.lv===3)badge('hard');
+    if(streak>=2&&level<3){level++;streak=0;say('voi','🎉 Voi tăng độ khó lên một bậc nhé!','ok')}}
+  else{streak=0;let h='Chưa đúng rồi. Em cộng hoặc trừ hàng đơn vị trước, rồi đến hàng chục nhé!';
+    if(cur.lv<3&&cur.kind==='+'&&v===cur.a+cur.b-10){S.carry++;h='Ồ, hình như em quên chưa gửi 1 chục sang hàng chục rồi kìa! Cùng thử lại với Voi nhé!'}
+    else if(cur.lv<3&&cur.kind==='-'&&v===cur.ans+10){S.borrow++;h='Hình như em đã mượn 1 chục nhưng quên bớt 1 chục ở hàng chục rồi đó!'}
+    if(level>1){level--;h+='\nVoi chọn bài dễ hơn để em lấy lại tự tin nhé.'}
+    wrong(h);addWQ(cur);save()}
+  setTimeout(q1,800)
+}
+
+/* ---------- Trạm 3: toán có lời văn ---------- */
+const TP=[
+['ít hơn','−',()=>{const a=R(25,60),b=R(3,9);return[`Lớp 2A có ${a} học sinh, lớp 2B có ít hơn lớp 2A ${b} học sinh. Hỏi lớp 2B có bao nhiêu học sinh?`,a-b]},'Bạn A có 5 cái kẹo, bạn B có ít hơn bạn A 2 cái. Bạn B có nhiều hơn hay ít hơn 5 cái kẹo?'],
+['rụng mất','−',()=>{const a=R(20,45),b=R(3,9);return[`Trên cây có ${a} quả táo. Gió làm rụng mất ${b} quả. Hỏi trên cây còn lại bao nhiêu quả táo?`,a-b]},'Quả táo rụng xuống đất thì số táo trên cây nhiều lên hay ít đi?'],
+['thêm','+',()=>{const a=R(14,40),b=R(5,19);return[`Lan có ${a} cái kẹo. Mẹ cho Lan thêm ${b} cái nữa. Hỏi Lan có tất cả bao nhiêu cái kẹo?`,a+b]},'Mẹ cho thêm thì số kẹo của Lan nhiều lên hay ít đi?'],
+['nhiều hơn','+',()=>{const a=R(18,45),b=R(4,15);return[`Hà có ${a} bông hoa, Mai có nhiều hơn Hà ${b} bông. Hỏi Mai có bao nhiêu bông hoa?`,a+b]},'Mai có nhiều hơn Hà thì số hoa của Mai lớn hơn hay bé hơn số hoa của Hà?'],
+['cho bạn','−',()=>{const a=R(25,60),b=R(6,19);return[`Nam có ${a} viên bi. Nam cho bạn ${b} viên. Hỏi Nam còn lại bao nhiêu viên bi?`,a-b]},'Nam cho bạn bớt đi thì số bi của Nam nhiều lên hay ít đi?'],
+['mua thêm','+',()=>{const a=R(20,50),b=R(7,25);return[`Bình có ${a} quyển vở, mua thêm ${b} quyển nữa. Hỏi Bình có tất cả bao nhiêu quyển vở?`,a+b]},'Mua thêm thì số vở nhiều lên hay ít đi?']];
+function p3(){
+  let i;do{i=R(0,TP.length-1)}while(i===lastP);lastP=i;const t=TP[i],g=t[2]();cur={k:t[0],op:t[1],ex:t[3],ans:g[1]};step=1;tries=0;
+  info('Hiệp sĩ giải toán  •  Đã giải: '+S.solved+' bài');
+  say('voi','Bài toán đây nè:\n'+g[0]+'\n\nVoi sẽ không cho đáp số đâu, mình cùng nghĩ nhé! Từ “'+cur.k+'” gợi cho em nhớ đến phép tính nào?');
+  choices(['Cộng (+)','Trừ (−)'],o3,p3)
+}
+function o3(o){
+  if(o[0]===(cur.op==='+'?'C':'T')){react('jump');sfx('ok');say('voi','Đúng rồi! Vậy em hãy tính rồi nhắn Voi kết quả cuối cùng nhé.','ok');step=2;tries=0;numInput('Kết quả',r3,p3)}
+  else{tries++;wrong((tries>1?'Gợi ý nè: ':'')+cur.ex+'\nEm nghĩ lại xem nào!');choices(['Cộng (+)','Trừ (−)'],o3,p3)}
+}
+function r3(v){
+  if(v===cur.ans){S.solved++;right(' Em đã tự tìm ra lời giải rồi đó!');gain(3,3);if(S.solved===3)badge('knight');setTimeout(p3,1000)}
+  else{tries++;wrong(tries>2?'Chưa đúng. Em thử vẽ sơ đồ hoặc dùng que tính nhé, hoặc bấm “Bỏ qua” để sang bài khác!':'Chưa đúng rồi. Em đặt tính ra vở nháp, tính hàng đơn vị trước nhé!');numInput('Kết quả',r3,p3)}
+}
+
+/* ---------- Trạm 4: đồng hồ và khối hình ---------- */
+function clock(h,m){const ha=((h%12)+m/60)*30,ma=m*6;let n='';for(let i=1;i<=12;i++){const a=i*Math.PI/6;n+=`<text x="${60+44*Math.sin(a)}" y="${65-44*Math.cos(a)}" text-anchor="middle" font-size="11" font-weight="700" fill="#000054">${i}</text>`}
+  const s=document.createElementNS('http://www.w3.org/2000/svg','svg');s.setAttribute('viewBox','0 0 120 120');s.setAttribute('width','160');s.setAttribute('height','160');s.setAttribute('role','img');s.setAttribute('aria-label','Đồng hồ');
+  s.innerHTML=`<circle cx="60" cy="60" r="57" fill="#fff" stroke="#000054" stroke-width="4"/>${n}<line x1="60" y1="60" x2="60" y2="34" stroke="#D7263D" stroke-width="5" stroke-linecap="round" transform="rotate(${ha} 60 60)"/><line x1="60" y1="60" x2="60" y2="16" stroke="#0B63D8" stroke-width="3" stroke-linecap="round" transform="rotate(${ma} 60 60)"/><circle cx="60" cy="60" r="3.5" fill="#000054"/>`;return s}
+const lab=(h,m)=>h+' giờ'+(m?' '+m:'');
+const DAYS=['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ nhật'];
+function calQ(){info('Nhà kiến trúc nhí  •  Lịch');
+  if(Math.random()<.3){const m=R(1,12);if(m===2)return calQ();cur={type:'k',ans:[4,6,9,11].includes(m)?'30 ngày':'31 ngày',hint:'Em nắm bàn tay lại: đếm lần lượt trên gò xương và rãnh giữa các xương. Gò xương là tháng 31 ngày, rãnh là tháng 30 ngày nhé!'};say('voi','Tháng '+m+' có bao nhiêu ngày?');return choices(['30 ngày','31 ngày'],o4,t4)}
+  const i=R(0,6),nx=Math.random()<.5,ans=DAYS[(i+(nx?1:6))%7],set=new Set([ans]);while(set.size<4)set.add(pick(DAYS));
+  cur={type:'k',ans,hint:'Thứ tự các ngày trong tuần: Thứ Hai, Thứ Ba, Thứ Tư, Thứ Năm, Thứ Sáu, Thứ Bảy, Chủ nhật. '+(nx?'Ngày mai là ngày đứng ngay sau.':'Hôm qua là ngày đứng ngay trước.')};
+  say('voi','Hôm nay là '+DAYS[i]+'. '+(nx?'Ngày mai':'Hôm qua')+' là thứ mấy?');choices(shuf([...set]),o4,t4)}
+function t4(){pick([clockQ,shapeQ,calQ])()}
+function clockQ(){
+  const h=R(1,12),m=pick(S.clk<3?[0,30]:[0,15,30,45]),ans=lab(h,m),set=new Set([ans]);
+  while(set.size<4)set.add(lab(R(1,12),pick(S.clk<3?[0,30]:[0,15,30,45])));
+  cur={type:'c',ans};info('Nhà kiến trúc nhí  •  Xem giờ');
+  say('voi','Kim ngắn chỉ giờ, kim dài chỉ phút. Đồng hồ đang chỉ mấy giờ?','',clock(h,m));
+  choices(shuf([...set]),o4,t4)
+}
+const SH=[['🎲','con xúc xắc','khối lập phương'],['🧊','viên đá vuông','khối lập phương'],['⚽','quả bóng đá','khối cầu'],['🏀','quả bóng rổ','khối cầu'],['🥫','lon sữa','khối trụ'],['🛢️','thùng phuy','khối trụ'],['📦','hộp các-tông','khối hộp chữ nhật']];
+const SHH={'khối lập phương':'Khối này có 6 mặt, tất cả đều là hình vuông bằng nhau.','khối cầu':'Khối này lăn được theo mọi hướng và không có mặt phẳng nào.','khối trụ':'Khối này có 2 mặt tròn phẳng ở hai đầu và 1 mặt cong ở xung quanh.','khối hộp chữ nhật':'Khối này có 6 mặt là các hình chữ nhật.'};
+function shapeQ(){
+  const s=pick(SH);cur={type:'s',ans:s[2]};info('Nhà kiến trúc nhí  •  Nhận biết khối');
+  const big=document.createElement('span');big.className='big';big.textContent=s[0];big.setAttribute('role','img');big.setAttribute('aria-label',s[1]);
+  say('voi','Em nhìn xem, '+s[1]+' có dạng khối gì nhỉ?','',big);choices(shuf(Object.keys(SHH)),o4,t4)
+}
+function o4(o){
+  if(o===cur.ans){right();gain(2,2);if(cur.type==='c'){S.clk++;if(S.clk===3)badge('clock')}else if(cur.type==='s'){S.shp++;if(S.shp===3)badge('shape')}else S.cal++;setTimeout(t4,900)}
+  else{tries++;wrong(cur.type==='c'?'Chưa đúng. Kim dài chỉ số 12 là giờ đúng, chỉ số 6 là 30 phút. Em nhìn kim ngắn xem nó gần số mấy nhé!':cur.type==='s'?'Chưa đúng. Gợi ý nè: '+SHH[cur.ans]:'Chưa đúng. Gợi ý nè: '+cur.hint);save()}
+}
+
+/* ---------- Đua tốc độ 60 giây ---------- */
+function startRace(){rc=0;rt=60;sfx('go');say('voi','Sẵn sàng chưa? Làm càng nhiều câu đúng càng tốt. 60 giây, bắt đầu!');nextR();clearInterval(rTimer);
+  rTimer=setInterval(()=>{rt--;info('⏱️ '+rt+' giây  •  Đúng: '+rc+'  •  Kỷ lục: '+S.race);if(rt<=10&&rt>0)sfx('tick');if(rt<=0){clearInterval(rTimer);endRace()}},1000);info('⏱️ 60 giây  •  Đúng: 0  •  Kỷ lục: '+S.race)}
+function nextR(){level=R(1,2);say('voi',genQ());numInput('Đáp số',cr)}
+function cr(v){if(rt<=0)return;if(v===cur.ans){rc++;tick(true);S.ok++;sfx('ok');say('voi','✅','ok')}else{tick(false);S.bad++;sfx('no');addWQ(cur);say('voi','❌ Đáp án đúng là '+cur.ans,'bad')}nextR()}
+function endRace(){bar.innerHTML='';sfx('end');if(rc>S.race){S.race=rc;say('voi','🏆 Kỷ lục mới!','ok')}
+  say('voi','⏱️ Hết giờ! '+ten()+' làm đúng '+rc+' câu.',rc>=5?'ok':'');gain(rc,Math.floor(rc/2));if(rc>=10)badge('race');save();
+  choices(['Chơi lại','Về menu'],o=>o==='Chơi lại'?startRace():go(0))}
+
+/* ---------- Bảng nhân chia ---------- */
+function mq(){const n=pick(S.mul<6?[2,5]:[2,3,4,5]),k=R(1,10);
+  cur=Math.random()<.6?{ans:n*k,text:n+' × '+k+' = ?',hint:n+' × '+k+' nghĩa là '+k+' lần số '+n+'. Em cộng '+k+' lần số '+n+' lên nhé!'}:{ans:k,text:(n*k)+' : '+n+' = ?',hint:'Em tự hỏi: '+n+' nhân mấy thì bằng '+(n*k)+'? Nhớ lại bảng nhân '+n+' nhé!'};
+  info('Bảng nhân chia  •  Đã đúng: '+S.mul);say('voi',cur.text);numInput('Đáp số',cm)}
+function cm(v){if(v===cur.ans){S.mul++;right();gain(1,1);if(S.mul===10)badge('mul')}else{wrong('Chưa đúng. '+cur.hint);addWQ(cur)}setTimeout(mq,900)}
+
+/* ---------- So sánh số ---------- */
+function cq(){const a=R(10,99);info('So sánh số  •  Đã đúng: '+S.cmp);
+  if(Math.random()<.6){const b=Math.random()<.15?a:R(10,99);cur={ans:a>b?'>':a<b?'<':'=',hint:'So sánh hàng chục trước. Hàng chục bằng nhau thì so sánh hàng đơn vị nhé!'};say('voi','Điền dấu thích hợp:   '+a+'  ?  '+b);choices(['>','<','='],cc)}
+  else{const set=new Set([a]);while(set.size<3)set.add(R(10,99));const arr=[...set],big=Math.random()<.5;cur={ans:String(big?Math.max(...arr):Math.min(...arr)),hint:'So sánh hàng chục trước. Hàng chục bằng nhau thì so sánh hàng đơn vị nhé!'};say('voi','Số nào '+(big?'lớn':'bé')+' nhất trong các số: '+arr.join(', ')+'?');choices(arr.map(String),cc)}}
+function cc(o){if(o===cur.ans){S.cmp++;right();gain(1,1);if(S.cmp===10)badge('cmp');setTimeout(cq,800)}else wrong('Chưa đúng. Gợi ý nè: '+cur.hint)}
+
+/* ---------- Sổ tay lỗi sai: ôn lại ---------- */
+function rev(){info('Sổ tay lỗi sai  •  Còn '+S.wq.length+' câu');
+  if(!S.wq.length){say('voi','Sổ tay trống rồi, em giỏi quá! 🎉');choices(['Về menu'],()=>go(0));return}
+  cur=S.wq[0];say('voi','Ôn lại nè: '+cur.t);numInput('Đáp số',cv,()=>{S.wq.push(S.wq.shift());save();rev()})}
+function cv(v){if(v===cur.a){S.wq.shift();S.rev++;right();gain(2,1);if(S.rev===5)badge('review');save();setTimeout(rev,900)}else{wrong('Chưa đúng, em thử lại nhé!');numInput('Đáp số',cv,()=>{S.wq.push(S.wq.shift());save();rev()})}}
+
+/* ---------- Bác sĩ toán học: khám bài làm của bạn Gấu ---------- */
+let dc=null,ax=null;
+function calcNode(c){const d=document.createElement('div');d.className='calc';
+  const cell=(t,cl)=>{const e=document.createElement('div');e.textContent=t;if(cl)e.className=cl;return e};
+  const bt=c.type==='align'?String(c.b):(Math.floor(c.b/10)||''),bu=c.type==='align'?'':String(c.b%10);
+  d.append(cell(''),cell(Math.floor(c.a/10)),cell(c.a%10),cell(c.op,'op'),cell(bt),cell(bu));
+  const ln=document.createElement('div');ln.className='ln';d.append(ln,cell(''),cell(Math.floor(c.sh/10)||''),cell(c.sh%10));
+  [40,96,152].forEach(x=>{const i=document.createElement('i');i.style.left=x+'px';d.appendChild(i)});
+  d.setAttribute('role','img');d.setAttribute('aria-label','Phép tính đặt dọc: '+c.a+' '+c.op+' '+c.b+' = '+c.sh);return d}
+const DL=['Quên nhớ 1 chục','Quên bớt 1 chục','Đặt lệch hàng','Bài làm đúng'],DT=['carry','borrow','align','ok'];
+const DH={carry:'Hàng đơn vị cộng được 10 trở lên thì viết hàng đơn vị và nhớ 1 chục sang hàng chục nhé!',borrow:'Hàng đơn vị không đủ trừ thì mượn 1 chục, nhớ bớt 1 chục ở hàng chục nhé!',align:'Các chữ số cùng hàng phải thẳng cột: số có 1 chữ số đứng ở cột hàng đơn vị nhé!'};
+const DY={carry:'bạn Gấu quên nhớ 1 chục sang hàng chục',borrow:'bạn Gấu mượn 1 chục nhưng quên bớt 1 chục ở hàng chục',align:'bạn Gấu đặt lệch hàng, số có 1 chữ số bị đặt vào cột hàng chục'};
+function doctor(){info('Bác sĩ toán học  •  Tìm lỗi sai trong bài làm của bạn Gấu');say('voi','Bạn Gấu nhờ Bác sĩ toán học khám bài làm giúp! Em nhìn các đường kẻ đỏ để xem các chữ số có thẳng hàng không nhé.');nextDoc()}
+function nextDoc(){const r=Math.random();let a,b,type,ans,sh,op='+';
+  if(r<.3){type='carry';do{a=R(21,69);b=R(12,39)}while(a%10+b%10<10||a+b>99);ans=a+b;sh=ans-10}
+  else if(r<.55){type='borrow';op='−';do{a=R(41,92);b=R(12,a-10)}while(b%10<=a%10);ans=a-b;sh=ans+10}
+  else if(r<.8){type='align';const bb=R(2,6);a=R(21,99-10*bb);b=bb;ans=a+b;sh=a+10*b}
+  else{type='ok';if(Math.random()<.5){a=R(21,69);b=R(12,29);ans=a+b}else{op='−';a=R(41,92);b=R(12,a-10);ans=a-b}sh=ans}
+  dc={type,a,b,op,ans,sh,tries:0};say('voi','Bài làm của bạn Gấu đây. Theo em, bạn Gấu làm có đúng không?','',calcNode(dc));choices(DL,diag,nextDoc)}
+function diag(o){const t=DT[DL.indexOf(o)];
+  if(t===dc.type){if(t==='ok'){right(' Bài làm của bạn Gấu hoàn toàn đúng!');doneDoc()}
+    else{say('voi','Đúng rồi! '+DY[t][0].toUpperCase()+DY[t].slice(1)+'. Vậy kết quả đúng của phép tính '+dc.a+' '+dc.op+' '+dc.b+' là bao nhiêu?','ok');numInput('Kết quả đúng',dres,nextDoc)}}
+  else wrong('Chưa đúng. Em nhìn các đường kẻ đỏ: các chữ số đã thẳng hàng chưa? Rồi tính lại hàng đơn vị trước nhé!')}
+function dres(v){if(v===dc.ans){right(' Em đã sửa đúng bài cho bạn Gấu!');doneDoc()}
+  else{dc.tries++;wrong('Chưa đúng. '+DH[dc.type]+(dc.tries>1?'\nEm thử viết ra vở nháp rồi tính từng hàng nhé!':''));numInput('Kết quả đúng',dres,nextDoc)}}
+function doneDoc(){gain(2,2);S.doc++;if(S.doc===3)badge('doctor');setTimeout(nextDoc,1100)}
+
+/* ---------- Hỏi Voi: gợi mở từng bước, không cho đáp số ---------- */
+const PLUSW=['thêm','nhiều hơn','tất cả','tổng','gộp','cộng'],MINUSW=['bớt','ít hơn','còn lại','rụng','mất','cho bạn','cho đi','ăn mất','trừ','bay đi'];
+function parse(t){t=t.toLowerCase();const m=t.match(/(\d+)\s*([+\-−–×x*:\/÷])\s*(\d+)/);
+  if(m){const o=m[2];return{a:+m[1],b:+m[3],calc:true,op:o==='+'?'+':'-−–'.includes(o)?'−':'×x*'.includes(o)?'×':':'}}
+  const n=(t.match(/\d+/g)||[]).map(Number);if(n.length<2)return null;
+  const f=L=>{let best=null;L.forEach(w=>{const i=t.indexOf(w);if(i>=0&&(!best||i<best[1]))best=[w,i]});return best};
+  const p=f(PLUSW),q=f(MINUSW);if(!p&&!q)return null;const up=p&&(!q||p[1]<q[1]);
+  return{a:n[0],b:n[1],op:up?'+':'−',kw:(up?p:q)[0]}}
+function ask(){info('Hỏi Voi  •  Voi biết cộng, trừ, nhân, chia và toán đố đơn giản');
+  say('voi','Em gõ một bài Toán cho Voi nhé. Ví dụ: “35 + 27”, hoặc kể bài toán như “Lan có 17 cái kẹo, mẹ cho thêm 9 cái”. Voi sẽ cùng em nghĩ từng bước, không cho đáp số đâu nha!');askBar()}
+function askBar(){bar.innerHTML='';const i=document.createElement('input');i.type='text';i.placeholder='Gõ bài toán của em…';i.maxLength=200;i.setAttribute('aria-label','Bài toán của em');
+  const b=document.createElement('button');b.textContent='Gửi';const go=()=>{const t=i.value.trim();if(t)handleAsk(t)};b.onclick=go;i.onkeydown=e=>{if(e.key==='Enter')go()};bar.append(i,b);i.focus()}
+function handleAsk(t){sfx('send');say('me',t);const x=parse(t);
+  if(!x){say('voi','Voi chưa hiểu đề. Em gõ phép tính như “35 + 27”, hoặc kể bài toán có số và các từ như “thêm”, “bớt”, “ít hơn” nhé!');return askBar()}
+  let{a,b,op}=x;
+  if(op==='−'&&a<b){if(x.calc){say('voi','Số bị trừ bé hơn số trừ, lớp 2 chưa học số âm nhé! Em thử bài khác nhé!');return askBar()}[a,b]=[b,a]}
+  const ans=op==='+'?a+b:op==='−'?a-b:op==='×'?a*b:(b&&a%b===0?a/b:null);
+  if(ans===null||a>100||b>100||ans>100){say('voi','Voi chỉ giúp các bài trong phạm vi 100, và phép chia phải chia hết nhé! Em thử bài khác nhé!');return askBar()}
+  ax={a,b,op,ans,tries:0};
+  if(x.calc)return guide();
+  say('voi','Voi thấy trong đề có các số '+a+' và '+b+'. Từ “'+x.kw+'” gợi em nhớ đến phép tính nào?');
+  choices(['Cộng (+)','Trừ (−)'],o=>{if((o[0]==='C'?'+':'−')===op){say('voi','Đúng rồi! Mình cùng tính nhé.','ok');guide()}else wrong('Chưa đúng. Em nghĩ xem số lượng nhiều lên hay ít đi nhé!')},askBar)}
+function guide(){const{a,b,op}=ax;ax.tries=0;
+  if(op==='+'||op==='−'){const ua=a%10,ub=b%10,br=op==='−'&&ua<ub;ax.u=op==='+'?ua+ub:(br?ua+10:ua)-ub;
+    say('voi',br?'Hàng đơn vị: '+ua+' không đủ trừ '+ub+', mình mượn 1 chục thành '+(ua+10)+'. Vậy '+(ua+10)+' − '+ub+' bằng mấy?':'Đầu tiên là hàng đơn vị: '+ua+' '+op+' '+ub+' bằng mấy?');numInput('Hàng đơn vị',au,askBar)}
+  else{say('voi',op==='×'?a+' × '+b+' nghĩa là '+b+' lần số '+a+'. Em cộng '+b+' lần số '+a+' xem được bao nhiêu nhé!':a+' : '+b+' nghĩa là chia '+a+' thành các nhóm '+b+'. '+b+' nhân mấy thì bằng '+a+'?');numInput('Kết quả',ar,askBar)}}
+function au(v){if(v===ax.u){ax.tries=0;say('voi','Đúng rồi! '+(ax.op==='+'&&ax.u>=10?'Được '+ax.u+' thì viết '+ax.u%10+' và nhớ 1 chục sang hàng chục. ':'')+'Vậy kết quả cuối cùng của '+ax.a+' '+ax.op+' '+ax.b+' là bao nhiêu?','ok');numInput('Kết quả',ar,askBar)}
+  else{ax.tries++;wrong(ax.tries>1?'Chưa đúng. Em dùng que tính hoặc đếm thêm từng đơn vị nhé!':'Chưa đúng. Em thử tính lại hàng đơn vị nhé!');numInput('Hàng đơn vị',au,askBar)}}
+function ar(v){if(v===ax.ans){right(' Em đã tự giải xong bài toán rồi!');gain(2,2);S.askn++;if(S.askn===5)badge('ask');say('voi','Em gõ bài khác cho Voi nhé!');askBar()}
+  else{ax.tries++;wrong(ax.op==='×'||ax.op===':'?'Chưa đúng. Em nhớ lại bảng nhân nhé!':ax.tries>2?'Chưa đúng. Em viết ra vở nháp, tính từng hàng, hoặc bấm “Bỏ qua” để đổi bài nhé!':'Chưa đúng. Em kiểm tra lại hàng chục nhé!');numInput('Kết quả',ar,askBar)}}
+
+/* ---------- điều khiển ---------- */
+function go(m){if(m!==5)sfx(m?'nav':'back');
+  mode=m;$('home').hidden=m!==0;chat.hidden=bar.hidden=$('back').hidden=$('hint').hidden=m===0;chat.innerHTML='';bar.innerHTML='';info('');
+  clearInterval(rTimer);if(m===0){homeInfo();return}
+  say('voi',m===2||m===9?'':['','🐘 Chào '+ten()+'! Mình cùng thử thách tính nhanh nhé!','','🐘 Hôm nay mình làm Hiệp sĩ giải toán nhé!','🐘 Cùng làm nhà kiến trúc nhí nào!','🏎️ Đua tốc độ nào, '+ten()+'!','✖️ Mình cùng luyện bảng nhân chia nhé!','⚖️ Hôm nay mình làm thẩm phán so sánh số nhé!','📒 Mình cùng ôn lại những câu trước nhé!'][m]);
+  if(m===1){level=1;streak=0;q1()}else if(m===3)p3();else if(m===4)t4();else if(m===5)startRace();else if(m===6)mq();else if(m===7)cq();else if(m===2)doctor();else if(m===9)ask();else rev()
+}
+document.querySelectorAll('.card[data-m]').forEach(b=>b.onclick=()=>go(+b.dataset.m));
+$('back').onclick=()=>go(0);
+$('hint').onclick=()=>{sfx('hint');if(mode===2||mode===9){say('voi','💡 Em viết rõ từng bước phép tính ra vở nháp rồi cho Voi xem nhé!');return}if(!cur)return;
+  if(mode===6||mode===7)say('voi','💡 '+cur.hint);else if(mode===8)say('voi','💡 Em cộng hoặc trừ hàng đơn vị trước, nhớ (hoặc bớt) 1 chục khi cần nhé!');else if(mode===1||mode===5)say('voi',cur.kind==='+'?'💡 Mẹo: cộng hàng đơn vị trước ('+cur.a%10+' + '+cur.b%10+'). Nếu được 10 trở lên thì nhớ 1 chục sang hàng chục nhé!':cur.kind==='-'?'💡 Mẹo: trừ hàng đơn vị trước. Không đủ để trừ thì mượn 1 chục, nhớ bớt 1 chục ở hàng chục nhé!':'💡 Mẹo: số cần tìm bằng hiệu (hoặc tổng) của hai số đã biết. Em thử nghĩ xem phép nào hợp nhé!');
+  else if(mode===3)say('voi',step===1?'💡 '+cur.ex:'💡 Em thử vẽ sơ đồ, hoặc dùng que tính. Đặt tính hàng đơn vị trước nhé!');
+  else say('voi',cur.type==='c'?'💡 Kim ngắn chỉ giờ, kim dài chỉ phút. Kim dài chỉ số 12 là giờ đúng.':cur.type==='s'?'💡 '+SHH[cur.ans]:'💡 '+cur.hint)};
+$('snd').onclick=()=>{snd=!snd;$('snd').setAttribute('aria-pressed',snd);if(snd)sfx('click')};
+function panel(){
+  const t=S.ok+S.bad,pct=t?Math.round(S.ok/t*100):0;
+  $('sheet').innerHTML=`<h2>🏅 Thành tích</h2><div class="row"><span>Câu đúng / tổng</span><b>${S.ok} / ${t} (${pct}%)</b></div><div class="row"><span>Chuỗi đúng dài nhất</span><b>${S.best}</b></div><div class="row"><span>Hay quên “nhớ” khi cộng</span><b>${S.carry} lần</b></div><div class="row"><span>Hay quên “bớt 1 chục” khi trừ</span><b>${S.borrow} lần</b></div><div class="row"><span>Bài toán đố đã giải</span><b>${S.solved}</b></div><h2 style="margin-top:14px">Huy hiệu</h2>`+Object.keys(BD).map(k=>`<div class="bd ${S.b[k]?'':'off'}"><span style="font-size:26px">${BD[k][0]}</span><span>${BD[k][1]}</span></div>`).join('')+`<div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn" id="rp">📋 Báo cáo phụ huynh</button><button class="btn" id="rst">Làm lại từ đầu</button><button class="btn" id="cls" style="margin-left:auto">Đóng</button></div>`;
+  $('rp').onclick=()=>{const tx='BÁO CÁO HỌC TẬP – bé '+ten()+'\nNgày '+new Date().toLocaleDateString('vi-VN')+'\n• Câu đúng: '+S.ok+'/'+t+' ('+pct+'%)\n• Chuỗi ngày học liên tiếp: '+S.days+'\n• Hay quên “nhớ” khi cộng: '+S.carry+' lần; quên “bớt 1 chục” khi trừ: '+S.borrow+' lần\n• Bài toán đố đã giải: '+S.solved+'\n• Đua tốc độ 60 giây: kỷ lục '+S.race+' câu\n• Huy hiệu: '+Object.keys(S.b).length+'/'+Object.keys(BD).length;
+    const ta=document.createElement('textarea');ta.readOnly=true;ta.value=tx;ta.rows=8;ta.setAttribute('aria-label','Nội dung báo cáo');ta.style.cssText='width:100%;margin-top:10px;font:inherit;font-size:14px;padding:8px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)';
+    $('sheet').insertBefore(ta,$('sheet').lastElementChild);ta.select();try{navigator.clipboard.writeText(tx).then(()=>{$('rp').textContent='Đã sao chép ✓'},()=>{})}catch(e){}};
+  $('panel').hidden=false;sfx('open');$('cls').onclick=()=>{$('panel').hidden=true;sfx('close')};
+  let sure=false;$('rst').onclick=()=>{if(!sure){sure=true;$('rst').textContent='Bấm lần nữa để xóa hết';return}
+    S=DEF();save();hud();$('panel').hidden=true;go(0);askName()};
+  $('cls').focus()}
+$('rep').onclick=panel;
+$('panel').onclick=e=>{if(e.target.id==='panel'){$('panel').hidden=true;sfx('close')}};
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('panel').hidden){$('panel').hidden=true;sfx('close')}});
+/* ---------- Lời chào mở đầu của Voi (giọng nói, chỉ phát đúng một lần khi mở app) ---------- */
+function greetText(first){
+  if(first)return['Xin chào '+ten()+'!','Mình là Voi Thông Thái. Rất vui được làm quen với bạn! Từ hôm nay, mình sẽ đồng hành cùng bạn học Toán thật vui nhé. Chúng mình cùng bắt đầu thôi nào!'];
+  const h=new Date().getHours(),part=h<11?'buổi sáng':h<14?'buổi trưa':h<18?'buổi chiều':'buổi tối',st=S.day===today()||S.day===yest()?S.days:0;
+  return['Chào '+part+', '+ten()+'!','Voi nhớ bạn lắm đó!'+(st>=2?' Bạn đã học liên tiếp '+st+' ngày rồi, giỏi quá!':'')+' Hôm nay mình cùng học Toán thật vui nhé!']}
+const stat=t=>{const e=$('wst');if(e)e.textContent=t||''};
+function speakHi(t){stat('');
+  if(!snd){stat('🔔 Âm thanh đang tắt nên Voi chỉ chào bằng chữ.');return}
+  if(!window.speechSynthesis||!window.SpeechSynthesisUtterance){stat('Trình duyệt này chưa hỗ trợ giọng nói. Em hãy mở bằng Chrome hoặc Safari nhé.');return}
+  const run=()=>{try{const all=speechSynthesis.getVoices(),v=all.find(x=>/^vi/i.test(x.lang)||/vietnam/i.test(x.name))||null;
+      if(!v&&all.length){stat('Máy này chưa có giọng tiếng Việt. Em cài giọng Tiếng Việt trong phần cài đặt giọng nói (text-to-speech) của máy nhé.');return}
+      const u=new SpeechSynthesisUtterance(t);u.lang='vi-VN';if(v)u.voice=v;u.rate=.95;u.pitch=1.2;u.volume=1;let started=false,bad=false;
+      u.onstart=()=>{started=true;stat('🔊 Voi đang chào em…')};u.onend=()=>stat('');
+      u.onerror=e=>{if(e&&e.error!=='canceled'&&e.error!=='interrupted'){bad=true;stat('Không phát được giọng nói (lỗi: '+(e.error||'không rõ')+'). Em bấm “Nghe Voi chào” thử lại nhé.')}};
+      const go=()=>{try{speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){stat('Không phát được giọng nói.')}};
+      if(speechSynthesis.speaking||speechSynthesis.pending){speechSynthesis.cancel();setTimeout(go,120)}else go();
+      setTimeout(()=>{if(!started&&!bad&&!speechSynthesis.speaking)stat('Chưa nghe thấy tiếng? Em kiểm tra âm lượng phương tiện, tắt chế độ im lặng rồi bấm “Nghe Voi chào” nhé.')},3000)
+    }catch(e){stat('Không phát được giọng nói.')}};
+  if(speechSynthesis.getVoices().length)run();else{let d=0;const f=()=>{if(d++)return;run()};try{speechSynthesis.addEventListener('voiceschanged',f,{once:true})}catch(e){}setTimeout(f,1200)}}
+function welcome(first){const g=greetText(first),txt=g[0]+' '+g[1];let spoken=false;$('wh').textContent=g[0];$('wt').textContent=g[1];stat('');$('welcome').hidden=false;
+  const m=$('wm');m.classList.remove('jump');void m.offsetWidth;m.classList.add('jump');
+  if(first){spoken=true;speakHi(txt)}
+  $('wr').onclick=()=>{spoken=true;speakHi(txt)};
+  $('wb').onclick=()=>{$('welcome').hidden=true;sfx('win');if(!spoken)speakHi(txt)};$('wb').focus()}
+function askName(){$('nameov').hidden=false;$('nmi').value='';$('nmi').focus()}
+function setName(){S.name=$('nmi').value.trim().slice(0,20)||'bạn nhỏ';const first=!S.hello;S.hello=1;save();$('nameov').hidden=true;homeInfo();welcome(first)}
+$('nmb').onclick=setName;$('nmi').onkeydown=e=>{if(e.key==='Enter')setName()};
+document.addEventListener('click',e=>{if(e.target.closest&&e.target.closest('button')&&performance.now()-lastT>60)sfx('click')});
+addEventListener('pointerdown',()=>{if(snd)ac()},{once:true});
+hud();homeInfo();if(!S.name)askName();else welcome(false);
+</script>
+</body>
+</html>
